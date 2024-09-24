@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Ski Resort Data Filter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], select {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        .slider-container {
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .dual-slider {
+            position: relative;
+            height: 50px;
+        }
+        .dual-slider input {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        .dual-slider input::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            pointer-events: auto;
+            -webkit-appearance: none;
+        }
+        .dual-slider input::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            pointer-events: auto;
+            -moz-appearance: none;
+        }
+        .slider-track {
+            width: 100%;
+            height: 5px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            border-radius: 5px;
+            background: #d3d3d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced Ski Resort Data Filter</h1>
+        <form method="POST">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" placeholder="Enter city">
+
+            <label for="origin_country">Origin Country:</label>
+            <input type="text" id="origin_country" name="origin_country" placeholder="Enter origin country">
+
+            <label for="filter_countries">Filter Countries:</label>
+            <select id="filter_countries" name="filter_countries" multiple>
+                <option value="Italy">Italy</option>
+                <option value="Germany">Germany</option>
+                <option value="Austria">Austria</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="France">France</option>
+                <option value="Andorra">Andorra</option>
+                <option value="Norway">Norway</option>
+                <option value="Spain">Spain</option>
+                <option value="Finland">Finland</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Serbia">Serbia</option>
+                <option value="Bulgaria">Bulgaria</option>
+                <option value="Slovakia">Slovakia</option>
+                <option value="Czech Republic">Czech Republic</option>
+                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                <option value="Montenegro">Montenegro</option>
+                <option value="Slovenia">Slovenia</option>
+                <option value="Southern Russia">Southern Russia</option>
+                <option value="Poland">Poland</option>
+                <option value="Liechtenstein">Liechtenstein</option>
+                <option value="Greece">Greece</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="North Caucasus">North Caucasus</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="Romania">Romania</option>
+                <option value="Iceland">Iceland</option>
+                <option value="Northwest Russia">Northwest Russia</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="North Macedonia">North Macedonia</option>
+                <option value="Kosovo">Kosovo</option>
+                <option value="Croatia">Croatia</option>
+                <option value="Central Russia">Central Russia</option>
+                <option value="Lithuania">Lithuania</option>
+                <option value="Ural Federal District">Ural Federal District</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Volga Federal District">Volga Federal District</option>
+                <option value="Belarus">Belarus</option>
+                <option value="Estonia">Estonia</option>
+                <option value="Latvia">Latvia</option>
+                <option value="Albania">Albania</option>
+                <option value="Denmark">Denmark</option>
+                <option value="Moldova">Moldova</option>
+                <option value="China">China</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Greenland">Greenland</option>
+            </select>
+
+            <label for="total_slopes">Total Slopes (km):</label>
+            <div class="slider-container">
+                <div class="dual-slider">
+                    <input type="range" id="total_slopes_min" name="total_slopes_min" min="0" max="500" value="0">
+                    <input type="range" id="total_slopes_max" name="total_slopes_max" min="0" max="500" value="500">
+                    <div class="slider-track"></div>
+                </div>
+                <div>Min: <span id="total_slopes_min_value">0</span> km, Max: <span id="total_slopes_max_value">500</span> km</div>
+            </div>
+
+            <label for="total_lifts">Total Lifts:</label>
+            <div class="slider-container">
+                <div class="dual-slider">
+                    <input type="range" id="total_lifts_min" name="total_lifts_min" min="0" max="100" value="0">
+                    <input type="range" id="total_lifts_max" name="total_lifts_max" min="0" max="100" value="100">
+                    <div class="slider-track"></div>
+                </div>
+                <div>Min: <span id="total_lifts_min_value">0</span>, Max: <span id="total_lifts_max_value">100</span></div>
+            </div>
+
+            <label for="max_travel_time">Maximum Travel Time (hours):</label>
+            <input type="number" id="max_travel_time" name="max_travel_time" min="0" step="0.5" value="24">
+
+            <input type="submit" value="Search">
+        </form>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+
+    <script>
+        function setupDualSlider(minSliderId, maxSliderId, minValueId, maxValueId) {
+            const minSlider = document.getElementById(minSliderId);
+            const maxSlider = document.getElementById(maxSliderId);
+            const minValue = document.getElementById(minValueId);
+            const maxValue = document.getElementById(maxValueId);
+
+            function updateSliderValues() {
+                minValue.textContent = minSlider.value;
+                maxValue.textContent = maxSlider.value;
+            }
+
+            minSlider.oninput = function() {
+                if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
+                    minSlider.value = maxSlider.value;
+                }
+                updateSliderValues();
+            }
+
+            maxSlider.oninput = function() {
+                if (parseInt(maxSlider.value) < parseInt(minSlider.value)) {
+                    maxSlider.value = minSlider.value;
+                }
+                updateSliderValues();
+            }
+
+            updateSliderValues();
+        }
+
+        setupDualSlider('total_slopes_min', 'total_slopes_max', 'total_slopes_min_value', 'total_slopes_max_value');
+        setupDualSlider('total_lifts_min', 'total_lifts_max', 'total_lifts_min_value', 'total_lifts_max_value');
+    </script>
+</body>
+</html>

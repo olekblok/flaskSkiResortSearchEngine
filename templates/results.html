@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ski Resort Data Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .resort-box {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+        .resort-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .resort-info {
+            margin-bottom: 5px;
+        }
+        .slope-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .slope-bar {
+            height: 10px;
+            margin-top: 5px;
+        }
+        .blue-slope { background-color: #3498db; }
+        .red-slope { background-color: #e74c3c; }
+        .black-slope { background-color: #2c3e50; }
+        .lift-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .lift-item {
+            background-color: #f0f2f5;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 0.9em;
+        }
+        .travel-info {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .star-rating {
+            color: #f39c12;
+            font-size: 1.2em;
+        }
+        .country-flag {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .sort-controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .sort-controls select {
+            padding: 5px;
+            margin-right: 10px;
+        }
+        .sort-controls button {
+            padding: 5px 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .sort-controls button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ski Resort Data Results</h1>
+    <div class="sort-controls">
+        <select id="sort-by">
+            <option value="rating">Rating</option>
+            <option value="total_slopes">Total Slopes</option>
+            <option value="total_lifts">Total Lifts</option>
+            <option value="travel_time">Travel Time</option>
+            <option value="distance">Distance</option>
+        </select>
+        <button onclick="sortResorts()">Sort</button>
+        <button onclick="toggleSortOrder()">Toggle Asc/Desc</button>
+    </div>
+    <div id="resorts-container" class="container">
+        {% for _, resort in df.iterrows() %}
+        <div class="resort-box" data-rating="{{ resort['rating'].split(' ')[0] }}" data-total-slopes="{{ resort['total_slopes'] }}" data-total-lifts="{{ resort['total_lifts'] }}" data-travel-time="{{ resort['travel time [h]'] }}" data-distance="{{ resort['distance [km]'] }}">
+            <div class="resort-name">{{ resort['ski_resort_name'] }}</div>
+            <div class="resort-info">City: {{ resort['city'] }}</div>
+            <div class="resort-info">
+                Country:
+                <img src="https://flagcdn.com/24x18/{{ resort['country'].lower() }}.png"
+                     alt="{{ resort['country'] }} flag"
+                     class="country-flag">
+                {{ resort['country'] }}
+            </div>
+            <div class="resort-info">
+                Rating:
+                <span class="star-rating">
+                    {% set rating = resort['rating'].split(' ')[0]|float %}
+                    {% for _ in range(rating|int) %}★{% endfor %}
+                    {% if rating % 1 >= 0.5 %}½{% endif %}
+                    {% for _ in range(5 - rating|round|int) %}☆{% endfor %}
+                </span>
+                ({{ resort['rating'] }})
+            </div>
+            <div class="resort-info">Elevation: {{ resort['elevation_info'] }}</div>
+            <div class="resort-info">Total slopes: {{ resort['total_slopes'] }} km</div>
+            <div class="slope-info">
+                <div>
+                    <div>Blue: {{ resort['blue_slopes'] }} km</div>
+                    <div class="slope-bar blue-slope" style="width: {{ (resort['blue_slopes'] / resort['total_slopes']) * 100 }}%;"></div>
+                </div>
+                <div>
+                    <div>Red: {{ resort['red_slopes'] }} km</div>
+                    <div class="slope-bar red-slope" style="width: {{ (resort['red_slopes'] / resort['total_slopes']) * 100 }}%;"></div>
+                </div>
+                <div>
+                    <div>Black: {{ resort['black_slopes'] }} km</div>
+                    <div class="slope-bar black-slope" style="width: {{ (resort['black_slopes'] / resort['total_slopes']) * 100 }}%;"></div>
+                </div>
+            </div>
+            <div class="lift-info">
+                <div class="lift-item">Total lifts: {{ resort['total_lifts'] }}</div>
+                <div class="lift-item">Big Gondolas: {{ resort['total_big_gondolas'] }}</div>
+                <div class="lift-item">Gondolas: {{ resort['total_gondolas'] }}</div>
+                <div class="lift-item">Chairlifts: {{ resort['total_chairlifts'] }}</div>
+                <div class="lift-item">T-Bars: {{ resort['total_t_bars'] }}</div>
+                <div class="lift-item">Moving Carpets: {{ resort['total_moving_carpets'] }}</div>
+            </div>
+            <div class="travel-info">
+                <div>Travel time: {{ resort['travel time [h]']|round(2) }} hours</div>
+                <div>Distance: {{ resort['distance [km]']|round(2) }} km</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="/" class="back-link">Back to Search</a>
+
+    <script>
+        let sortOrder = 'desc'; // Default sort order
+
+        function toggleSortOrder() {
+            // Toggle between 'asc' and 'desc'
+            sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
+            sortResorts(); // Re-sort resorts based on new order
+        }
+
+        function sortResorts() {
+            const sortBy = document.getElementById('sort-by').value;
+            const container = document.getElementById('resorts-container');
+            const resorts = Array.from(container.getElementsByClassName('resort-box'));
+
+            resorts.sort((a, b) => {
+                let aValue, bValue;
+
+                switch(sortBy) {
+                    case 'rating':
+                        aValue = parseFloat(a.dataset.rating);
+                        bValue = parseFloat(b.dataset.rating);
+                        break;
+                    case 'total_slopes':
+                        aValue = parseFloat(a.dataset.totalSlopes);
+                        bValue = parseFloat(b.dataset.totalSlopes);
+                        break;
+                    case 'total_lifts':
+                        aValue = parseInt(a.dataset.totalLifts);
+                        bValue = parseInt(b.dataset.totalLifts);
+                        break;
+                    case 'travel_time':
+                        aValue = parseFloat(a.dataset.travelTime);
+                        bValue = parseFloat(b.dataset.travelTime);
+                        break;
+                    case 'distance':
+                        aValue = parseFloat(a.dataset.distance);
+                        bValue = parseFloat(b.dataset.distance);
+                        break;
+                }
+
+                if (sortOrder === 'asc') {
+                    return aValue - bValue; // Ascending order
+                } else {
+                    return bValue - aValue; // Descending order
+                }
+            });
+
+            resorts.forEach(resort => container.appendChild(resort));
+        }
+    </script>
+</body>
+</html>

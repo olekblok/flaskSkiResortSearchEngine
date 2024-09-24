@@ -1,0 +1,130 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HttpUrlsUsage" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredUrls">
+        <list>
+          <option value="http://0.0.0.0" />
+          <option value="http://127.0.0.1" />
+          <option value="http://activemq.apache.org/schema/" />
+          <option value="http://cxf.apache.org/schemas/" />
+          <option value="http://ipinfo.io" />
+          <option value="http://java.sun.com/" />
+          <option value="http://javafx.com/fxml" />
+          <option value="http://javafx.com/javafx/" />
+          <option value="http://json-schema.org/draft" />
+          <option value="http://localhost" />
+          <option value="http://maven.apache.org/POM/" />
+          <option value="http://maven.apache.org/xsd/" />
+          <option value="http://primefaces.org/ui" />
+          <option value="http://router.project-osrm.org" />
+          <option value="http://schema.cloudfoundry.org/spring/" />
+          <option value="http://schemas.xmlsoap.org/" />
+          <option value="http://tiles.apache.org/" />
+          <option value="http://www.ibm.com/webservices/xsd" />
+          <option value="http://www.jboss.com/xml/ns/" />
+          <option value="http://www.jboss.org/j2ee/schema/" />
+          <option value="http://www.springframework.org/schema/" />
+          <option value="http://www.springframework.org/security/tags" />
+          <option value="http://www.springframework.org/tags" />
+          <option value="http://www.thymeleaf.org" />
+          <option value="http://www.w3.org/" />
+          <option value="http://xmlns.jcp.org/" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="61">
+            <item index="0" class="java.lang.String" itemvalue="Automat" />
+            <item index="1" class="java.lang.String" itemvalue="pygame" />
+            <item index="2" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="3" class="java.lang.String" itemvalue="python-dotenv" />
+            <item index="4" class="java.lang.String" itemvalue="defusedxml" />
+            <item index="5" class="java.lang.String" itemvalue="h11" />
+            <item index="6" class="java.lang.String" itemvalue="setuptools" />
+            <item index="7" class="java.lang.String" itemvalue="cycler" />
+            <item index="8" class="java.lang.String" itemvalue="pycparser" />
+            <item index="9" class="java.lang.String" itemvalue="twisted-iocpsupport" />
+            <item index="10" class="java.lang.String" itemvalue="constantly" />
+            <item index="11" class="java.lang.String" itemvalue="trio" />
+            <item index="12" class="java.lang.String" itemvalue="filelock" />
+            <item index="13" class="java.lang.String" itemvalue="certifi" />
+            <item index="14" class="java.lang.String" itemvalue="PyDispatcher" />
+            <item index="15" class="java.lang.String" itemvalue="lxml" />
+            <item index="16" class="java.lang.String" itemvalue="peewee" />
+            <item index="17" class="java.lang.String" itemvalue="pyparsing" />
+            <item index="18" class="java.lang.String" itemvalue="hyperlink" />
+            <item index="19" class="java.lang.String" itemvalue="service-identity" />
+            <item index="20" class="java.lang.String" itemvalue="Scrapy" />
+            <item index="21" class="java.lang.String" itemvalue="cryptography" />
+            <item index="22" class="java.lang.String" itemvalue="kiwisolver" />
+            <item index="23" class="java.lang.String" itemvalue="zenrows" />
+            <item index="24" class="java.lang.String" itemvalue="zope.interface" />
+            <item index="25" class="java.lang.String" itemvalue="wsproto" />
+            <item index="26" class="java.lang.String" itemvalue="attrs" />
+            <item index="27" class="java.lang.String" itemvalue="contourpy" />
+            <item index="28" class="java.lang.String" itemvalue="fonttools" />
+            <item index="29" class="java.lang.String" itemvalue="parsel" />
+            <item index="30" class="java.lang.String" itemvalue="PySocks" />
+            <item index="31" class="java.lang.String" itemvalue="cssselect" />
+            <item index="32" class="java.lang.String" itemvalue="requests-file" />
+            <item index="33" class="java.lang.String" itemvalue="matplotlib" />
+            <item index="34" class="java.lang.String" itemvalue="itemadapter" />
+            <item index="35" class="java.lang.String" itemvalue="queuelib" />
+            <item index="36" class="java.lang.String" itemvalue="trio-websocket" />
+            <item index="37" class="java.lang.String" itemvalue="cffi" />
+            <item index="38" class="java.lang.String" itemvalue="itemloaders" />
+            <item index="39" class="java.lang.String" itemvalue="webdriver-manager" />
+            <item index="40" class="java.lang.String" itemvalue="numpy" />
+            <item index="41" class="java.lang.String" itemvalue="pyasn1" />
+            <item index="42" class="java.lang.String" itemvalue="requests" />
+            <item index="43" class="java.lang.String" itemvalue="w3lib" />
+            <item index="44" class="java.lang.String" itemvalue="sniffio" />
+            <item index="45" class="java.lang.String" itemvalue="selenium" />
+            <item index="46" class="java.lang.String" itemvalue="pyOpenSSL" />
+            <item index="47" class="java.lang.String" itemvalue="tldextract" />
+            <item index="48" class="java.lang.String" itemvalue="outcome" />
+            <item index="49" class="java.lang.String" itemvalue="pyarrow" />
+            <item index="50" class="java.lang.String" itemvalue="pyasn1_modules" />
+            <item index="51" class="java.lang.String" itemvalue="packaging" />
+            <item index="52" class="java.lang.String" itemvalue="incremental" />
+            <item index="53" class="java.lang.String" itemvalue="Protego" />
+            <item index="54" class="java.lang.String" itemvalue="sortedcontainers" />
+            <item index="55" class="java.lang.String" itemvalue="jmespath" />
+            <item index="56" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="57" class="java.lang.String" itemvalue="pillow" />
+            <item index="58" class="java.lang.String" itemvalue="pytz" />
+            <item index="59" class="java.lang.String" itemvalue="webencodings" />
+            <item index="60" class="java.lang.String" itemvalue="Twisted" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E722" />
+          <option value="W605" />
+          <option value="E731" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+          <option value="N803" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="dict.append" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
