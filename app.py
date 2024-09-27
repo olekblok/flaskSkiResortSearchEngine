@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import pandas as pd
 import requests
 import logging
-import time
 import concurrent.futures
 from ski_resort_scraper.geolocation import GeoLocator
 
@@ -33,13 +32,17 @@ def calculate_path(latitude1: float, longitude1: float, latitude2: float, longit
     :param latitude2:
     :param longitude2:
     """
-    url = f"http://router.project-osrm.org/route/v1/driving/{longitude1},{latitude1};{longitude2},{latitude2}"
+    url = (f"http://34.88.129.39:8080/ors/v2/directions/driving-car?&start={longitude1},{latitude1}&end={longitude2},"
+           f"{latitude2}")
 
     data = get_page(url)
     # Extract distance (in meters) and duration (in seconds)
     if data:
-        distance = data['routes'][0]['distance'] / 1000  # in kilometers
-        duration = data['routes'][0]['duration'] / 3600  # in hours
+        first_feature = data['features'][0]
+        first_segment = first_feature['properties']['segments'][0]
+
+        distance = first_segment['distance'] / 1000
+        duration = first_segment['duration'] / 3600
     else:
         distance = None
         duration = None
@@ -63,7 +66,7 @@ def add_travel_times(df, input_long, input_lat):
         return calculate_path(input_lat, input_long, latitude, longitude)
 
     # Using ThreadPoolExecutor for multithreading
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         # Map the calculation function to each row in the dataframe
         results = list(executor.map(calculate_for_row, [row for idx, row in df.iterrows()]))
 
@@ -96,7 +99,7 @@ def hello_world():
             return render_template('index.html', error="Could not find coordinates for the given city and country.")
 
         try:
-            df = pd.read_csv('ski_resorts.csv')
+            df = pd.read_csv('./data/ski_resorts.csv')
         except FileNotFoundError:
             return render_template('index.html', error="Ski resort data not available.")
 
@@ -112,14 +115,7 @@ def hello_world():
             return render_template('index.html', error="No ski resorts found matching your criteria.")
 
         df.dropna(inplace=True)
-        # Start the timer
-        start_time = time.time()
         df = add_travel_times(df, long, lat)
-        # End the timer and calculate the total time taken
-        end_time = time.time()
-        execution_time = end_time - start_time
-        print(f"Time taken: {execution_time:.2f} seconds")
-        df = df.sort_values('travel time [h]')
         # Filter by maximum travel time
         df = df[df['travel time [h]'] <= max_travel_time]
 
@@ -129,4 +125,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080)
