@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, request
 import pandas as pd
 import requests
 import logging
 import concurrent.futures
 from ski_resort_scraper.geolocation import GeoLocator
+from flask_cors import CORS
+import json
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
 
 def get_page(page_url: str):
@@ -74,55 +77,59 @@ def add_travel_times(df, input_long, input_lat):
     distances, durations = zip(*results)
 
     # Add results to the dataframe
-    df['distance [km]'] = distances
-    df['travel time [h]'] = durations
+    df['distance'] = distances
+    df['travel_time'] = durations
 
     return df
 
 
-@app.route('/', methods=['GET', 'POST'])
-def hello_world():
-    if request.method == 'POST':
-        city = request.form.get('city')
-        origin_country = request.form.get('origin_country')
-        filter_countries = request.form.getlist('filter_countries')
-        total_slopes_min = float(request.form.get('total_slopes_min', 0))
-        total_slopes_max = float(request.form.get('total_slopes_max', 500))
-        total_lifts_min = int(request.form.get('total_lifts_min', 0))
-        total_lifts_max = int(request.form.get('total_lifts_max', 100))
-        max_travel_time = float(request.form.get('max_travel_time', 24))
+@app.route('/', methods=['POST'])
+def get_ski_resorts():
+    data = request.get_json()
 
-        g = GeoLocator()
-        lat, long = g.get_coordinates(city, origin_country)
+    city = data.get('city')
+    origin_country = data.get('origin_country')
+    total_slopes_min = float(data.get('total_slopes_min', 0))
+    total_slopes_max = float(data.get('total_slopes_max', 500))
+    total_lifts_min = int(data.get('total_lifts_min', 0))
+    total_lifts_max = int(data.get('total_lifts_max', 100))
+    max_travel_time = float(data.get('max_travel_time', 24))
+    filter_countries = data.get('filter_countries')
+    if filter_countries:
+        filter_countries = json.loads(filter_countries)
+    # Get coordinates of the origin city
+    g = GeoLocator()
+    lat, long = g.get_coordinates(city, origin_country)
 
-        if long is None or lat is None:
-            return render_template('index.html', error="Could not find coordinates for the given city and country.")
+    if long is None or lat is None:
+        return jsonify({"error": "Could not find coordinates for the given city and country."}), 400
 
-        try:
-            df = pd.read_csv('./data/ski_resorts.csv')
-        except FileNotFoundError:
-            return render_template('index.html', error="Ski resort data not available.")
+    try:
+        df = pd.read_csv('./data/ski_resorts.csv')
+    except FileNotFoundError:
+        return jsonify({"error": "Ski resort data not available."}), 500
 
-        # Filter by selected countries
-        if filter_countries:
-            df = df[df['country'].isin(filter_countries)]
+    # Filter by selected countries
+    if filter_countries:
+        df = df[df['country'].isin(filter_countries)]
 
-        # Filter by total slopes and lifts
-        df = df[(df['total_slopes'] >= total_slopes_min) & (df['total_slopes'] <= total_slopes_max)]
-        df = df[(df['total_lifts'] >= total_lifts_min) & (df['total_lifts'] <= total_lifts_max)]
+    # Filter by total slopes and lifts
+    df = df[(df['total_slopes'] >= total_slopes_min) & (df['total_slopes'] <= total_slopes_max)]
+    df = df[(df['total_lifts'] >= total_lifts_min) & (df['total_lifts'] <= total_lifts_max)]
 
-        if df.empty:
-            return render_template('index.html', error="No ski resorts found matching your criteria.")
+    if df.empty:
+        return jsonify({"error": "No ski resorts found matching your criteria."}), 404
 
-        df.dropna(inplace=True)
-        df = add_travel_times(df, long, lat)
-        # Filter by maximum travel time
-        df = df[df['travel time [h]'] <= max_travel_time]
+    df.dropna(inplace=True)
+    df = add_travel_times(df, long, lat)
+    df = df[df['travel_time'] <= max_travel_time]
+    # Convert the DataFrame to a list of dictionaries
+    # Returning 21 best ski resorts according to rating
+    df = df.head(21)
+    result = df.to_dict(orient='records')
 
-        return render_template('results.html', df=df)
-
-    return render_template('index.html')
+    return jsonify(result), 200
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='127.0.0.1')

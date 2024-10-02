@@ -121,7 +121,7 @@
     </div>
     <div id="resorts-container" class="container">
         {% for _, resort in df.iterrows() %}
-        <div class="resort-box" data-rating="{{ resort['rating'].split(' ')[0] }}" data-total-slopes="{{ resort['total_slopes'] }}" data-total-lifts="{{ resort['total_lifts'] }}" data-travel-time="{{ resort['travel time [h]'] }}" data-distance="{{ resort['distance [km]'] }}">
+        <div class="resort-box" data-rating="{{ resort['rating'].split(' ')[0] }}" data-total-slopes="{{ resort['total_slopes'] }}" data-total-lifts="{{ resort['total_lifts'] }}" data-travel-time="{{ resort['travel_time'] }}" data-distance="{{ resort['distance'] }}">
             <div class="resort-name">{{ resort['ski_resort_name'] }}</div>
             <div class="resort-info">City: {{ resort['city'] }}</div>
             <div class="resort-info">
@@ -166,8 +166,8 @@
                 <div class="lift-item">Moving Carpets: {{ resort['total_moving_carpets'] }}</div>
             </div>
             <div class="travel-info">
-                <div>Travel time: {{ resort['travel time [h]']|round(2) }} hours</div>
-                <div>Distance: {{ resort['distance [km]']|round(2) }} km</div>
+                <div>Travel time: {{ resort['travel_time']|round(2) }} hours</div>
+                <div>Distance: {{ resort['distance']|round(2) }} km</div>
             </div>
         </div>
         {% endfor %}
