@@ -35,7 +35,7 @@ def calculate_path(latitude1: float, longitude1: float, latitude2: float, longit
     :param latitude2:
     :param longitude2:
     """
-    url = (f"http://34.88.129.39:8080/ors/v2/directions/driving-car?&start={longitude1},{latitude1}&end={longitude2},"
+    url = (f"http://34.88.106.163:8080/ors/v2/directions/driving-car?&start={longitude1},{latitude1}&end={longitude2},"
            f"{latitude2}")
 
     data = get_page(url)
